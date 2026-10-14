@@ -1,4 +1,5 @@
 package com.whenpigsfly.model;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public abstract class Habit{
@@ -10,6 +11,7 @@ public abstract class Habit{
     private boolean archived;
     private ArrayList<HabitEvent> events;
     private ArrayList<FocusSession> sessions;
+    private LocalDate createdDate;
 
     //constructor
     public Habit(int ID, String name, String category, WeeklyGoal weeklyGoal){
@@ -55,10 +57,50 @@ public abstract class Habit{
     public ArrayList<FocusSession> getSessions(){
         return sessions;
     }
+
+    public LocalDate getCreatedDate(){
+        return createdDate;
+    }
+
+    public int countEvents(EventType type, LocalDate from, LocalDate to){
+        int count = 0;
+        for(HabitEvent event : events){
+            if (event.getType() == type && !event.getDate().isBefore(from) && !event.getDate().isAfter(to)){
+                count ++;
+            }
+        }
+        return count;
+    }
     
+    public long focusedMinutesBetween(LocalDate from, LocalDate to){
+        long total = 0;
+        for(FocusSession session : sessions){
+            LocalDate day = session.getStartTime().toLocalDate();
+            if(session.getEndTime() != null && !day.isBefore(from) && !day.isAfter(to)){
+                total += session.getDurationMinutes();
+            }
+        }
+        return total;
+    }
+
+    public int countSuccesfulDays(LocalDate from, LocalDate to){
+        int count = 0;
+        LocalDate day = from;
+        while(!day.isAfter(to)){
+            if (isSuccessfulOn(day)){
+                count ++
+            }
+            day = day.plusDays(1);
+        }
+        return count;
+    }
+
 
 //setters
     public void setName(String name){
+        if(name.isBlank() || name == null){
+            throw new IllegalArgumentException("Habit name cannot be empty.");
+        }
         this.name = name;
     }
 
@@ -67,8 +109,18 @@ public abstract class Habit{
     }
 
     public void setWeeklyGoal(WeeklyGoal weeklyGoal){
+        if(weeklyGoal == null){
+            throw new IllegalArgumentException("Weekly goal cannot be empty.");
+        }
         this.weeklyGoal = weeklyGoal;
     }
+
+    public void setCreatedDate(LocalDate createdDate){
+        if(createdDate != null){
+            this.createdDate = createdDate;
+        }
+    }
+    
 
 //method to pause a habit
 public void pause(){
@@ -91,16 +143,26 @@ public void archive(){
 //methods to add events and sessions to the array list
 
 public void addEvent(HabitEvent event){
+    if(event == null){
+        throw new IllegalArgumentException("Event cannot be blank.");
+    }
     events.add(event);
 }
 
 public void addSession(FocusSession session){
+    if(session == null){
+        throw new IllegalArgumentException("Session cannot be blank.");
+    }
     sessions.add(session);
 }
+
+
 
 //abstract methods come here below
 public abstract double calculateProgress();
 
 public abstract String getHabitType();
+
+public abstract boolean isSuccessfulOn(LocalDate date);
 
 }
