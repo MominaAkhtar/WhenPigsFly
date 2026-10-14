@@ -1,12 +1,15 @@
 public class UserSettings{
-    String theme;
-    String defaultScreen;
-    boolean reducedMotion;
-    boolean mascotVisible;
+    private String theme;
+    private String defaultScreen;
+    private boolean reducedMotion;
+    private boolean mascotVisible;
 
 //user settings costructor
 public UserSettings(){
-
+this.theme = "light";
+this.defaultScreen = "dashboard";
+this.reducedMotion = false;
+this.mascotVisible = true;
 }
 
 //getters
@@ -28,11 +31,15 @@ public boolean isMascotVisible(){
 
 //setters
 public void setTheme(String theme){
-    this.theme = theme;
+    if(theme != null && !theme.isBlank()){
+        this.theme = theme;
+    }
 }
 
 public void setDefaultScreen(String screen){
-    defaultScreen = screen;
+    if(screen != null && !screen.isBlank()){
+        defaultScreen = screen;
+    }
 }
 
 public void setReducedMotion(boolean value){

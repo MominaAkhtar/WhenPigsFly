@@ -1,12 +1,12 @@
 import java.time.LocalDate;
 
 public class HabitEvent{
-    int id;
-    int habitId;
-    LocalDate date;
-    EventType type;
-    double value;
-    String note;
+    private int id;
+    private int habitId;
+    private LocalDate date;
+    private EventType type;
+    private double value;
+    private String note;
 
     //HabitEvent constructor
     public HabitEvent(int id, int habitId, LocalDate date, EventType type, double value){
@@ -15,6 +15,7 @@ public class HabitEvent{
         this.date = date;
         this.type = type;
         this.value = value;
+        this.note = "";
     }
 
     //getters 
