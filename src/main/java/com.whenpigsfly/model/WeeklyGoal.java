@@ -1,4 +1,4 @@
-public class WeeklyGoal(){
+public class WeeklyGoal{
     private GoalType goalType;
     private double targetValue;
     private String unit;

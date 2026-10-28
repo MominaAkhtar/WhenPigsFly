@@ -1,5 +1,7 @@
 package com.whenpigsfly.model;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 
 public abstract class Habit{
@@ -88,7 +90,7 @@ public abstract class Habit{
         LocalDate day = from;
         while(!day.isAfter(to)){
             if (isSuccessfulOn(day)){
-                count ++
+                count ++;
             }
             day = day.plusDays(1);
         }
@@ -164,5 +166,10 @@ public abstract double calculateProgress();
 public abstract String getHabitType();
 
 public abstract boolean isSuccessfulOn(LocalDate date);
+
+//return local date
+public static LocalDate currentWeekStart() {
+return LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+}
 
 }
